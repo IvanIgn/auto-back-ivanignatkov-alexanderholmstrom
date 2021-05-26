@@ -16,74 +16,60 @@ describe('Test suite', () => {
 
     /// Clients
 
-    it.only('getAllClients', () => {
-       // cy.getAllClients()
+    it('getAllClients', () => {
         client.getAllClients()
     })
 
-    it.only('createNewClient', () => {
-        cy.authenticate().then((response => { 
+    it('createNewClient', () => { 
         client.createNewClient()
-       // cy.createNewClient()
-     }))
     })
 
-    it.only('editLastClient', () => {
-      //  cy.authenticate().then((response => { 
+    it('editLastClient', () => {
         client.editLastClient()
-  //   }))
-        //cy.editLastClient()
     })
-
-    it.only('deleteLastClient', () => {
-        client.deleteLastClient()
-        //cy.deleteLastClient()
+    
+    it('deleteLastClient', () => {
+        client.deleteLastClient()  
     })
+    
     
     /// Rooms
     
     it('getAllRooms', () => {
         room.getAllRooms()
-       // cy.getAllRooms()
     })
 
     it('createNewRoom', () => {
         room.createNewRoom()
-       // cy.createNewRoom()
     })
 
     it('editLastRoom', () => {
         room.editLastRoom()
-       //cy.editLastRoom()
     })
     
     it('deleteLastRoom', () => {
         room.deleteLastRoom()
-       //cy.deleteLastRoom()
     })
+    
     
 
     /// Bills
     
     it('getAllBills', () => {
         bill.getAllBills()
-       // cy.getAllBills()
     })
 
     it('createNewBill', () => {
         bill.createNewBill()
-       // cy.createNewBill()
     })
 
     it('editLastBill', () => {
         bill.editLastBill()
-       // cy.editLastBill()
     })
     
-  it('deleteLastBill', () => {
+    it('deleteLastBill', () => {
         bill.deleteLastBill()
-       // cy.deleteLastBill()
-   })
+    })
     
     /// Logout
     
