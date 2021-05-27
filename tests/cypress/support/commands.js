@@ -1,5 +1,4 @@
 Cypress.Commands.add('authenticate', () => {
-    
     const USER_CREDENTIALS = {
        "username": "tester01", 
        "password": "GteteqbQQgSr88SwNExUQv2ydb7xuf8c"
@@ -18,7 +17,6 @@ Cypress.Commands.add('authenticate', () => {
         cy.log(response.body)
     }))
 })
-
 
 Cypress.Commands.add('logout', () => {
     cy.authenticate().then((response => {
