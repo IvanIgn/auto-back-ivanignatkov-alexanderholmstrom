@@ -1,22 +1,27 @@
 const faker = require('faker')
 
+const GET_CLIENTS_ENDPOINT = 'http://localhost:3000/api/clients'
+const CREATE_CLIENT_ENDPOINT = 'http://localhost:3000/api/client/new'
+const GET_CLIENT_ENDPOINT = 'http://localhost:3000/api/client/'
+
 
 //functions
 
-/*function clientInfo() {
+function clientInfo() {
 let clientData = {
-    "id": lastClientId(),
+    //"id": getLastClientID(), //+ id,
     "name": faker.name.firstName(),
     "email": faker.internet.email(),
     "telephone": faker.phone.phoneNumber()
 }
     return clientData   
 }
-*/
 
-/*
-function lastClientId () {
+
+
+function getLastClientID () {
     // Authentication; Getting a valid token
+    let bla = 0
     cy.authenticate().then((response => {
         // Get request to get all clients in order to extract the lastID
         cy.request({
@@ -29,7 +34,7 @@ function lastClientId () {
         }).then((response =>{
             expect(response.status).to.eq(200)
             //Save the id of the last client into a variable
-            let lastID = response.body[response.body.length -1].id
+           let lastID = response.body[response.body.length -1].id
             cy.log(lastID)
     
             cy.request({
@@ -39,18 +44,24 @@ function lastClientId () {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
                 }
-            })
+            }).then((response => {
+                expect(response.status).to.eq(200)
+              bla =  Cypress.env({lastClientID: lastID})
+                cy.log(JSON.stringify(response.body))
+            }))
             }))
         })) 
+        return bla
+       
 }
-*/
+
 
 
 function getAllClients () {
     cy.authenticate().then((response =>{
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/clients', 
+            url: GET_CLIENTS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -71,7 +82,7 @@ function createNewClient () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/clients', 
+            url: GET_CLIENTS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -84,7 +95,7 @@ function createNewClient () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/client/'+lastID,  
+                url: GET_CLIENT_ENDPOINT +lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -95,19 +106,20 @@ function createNewClient () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'POST',
-                    url: 'http://localhost:3000/api/client/new', 
+                    url: CREATE_CLIENT_ENDPOINT, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body: /*clientInfo() */ {
+                    body: /*clientInfo()*/ {
                         "id": lastID,
-                        "name": faker.name.findName(), //"Client" + lastID,
-                        "email": faker.internet.email(),//"client"+"/"+lastID+"/"+"@email.com",
-                        "telephone": faker.phone.phoneNumber()//"12312423423423"
+                        "name": faker.name.findName(), 
+                        "email": faker.internet.email(),
+                        "telephone": faker.phone.phoneNumber()
                     }                  
                 }).then((response => {
                     expect(response.status).to.eq(200)
+                   // Cypress.env({lastClientID:response.body.id})
                     cy.log(JSON.stringify(response.body))
                 }))
             }))
@@ -125,7 +137,7 @@ function editLastClient () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/clients', 
+            url: GET_CLIENTS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -138,7 +150,7 @@ function editLastClient () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/client/'+lastID,  
+                url: GET_CLIENT_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -148,12 +160,12 @@ function editLastClient () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/client/'+ lastID, 
+                    url: GET_CLIENT_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body:{
+                    body: /*clientInfo()*/ {
                         "id": lastID,
                         "name": faker.name.findName(),
                         "email": faker.internet.email(),
@@ -177,7 +189,7 @@ function deleteLastClient () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/clients', 
+            url: GET_CLIENTS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -190,7 +202,7 @@ function deleteLastClient () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/client/'+lastID,  
+                url: GET_CLIENT_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -200,7 +212,7 @@ function deleteLastClient () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'DELETE',
-                    url: 'http://localhost:3000/api/client/'+ lastID, 
+                    url: GET_CLIENT_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'

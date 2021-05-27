@@ -1,5 +1,9 @@
 const faker = require('faker')
 
+const GET_BILLS_ENDPOINT = 'http://localhost:3000/api/bills'
+const CREATE_BILL_ENDPOINT = 'http://localhost:3000/api/bill/new'
+const GET_BILL_ENDPOINT = 'http://localhost:3000/api/bill/'
+
 //functions
 /*
 function billInfo() {
@@ -17,7 +21,7 @@ function getAllBills () {
     cy.authenticate().then((response =>{
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/bills', 
+            url: GET_BILLS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -37,7 +41,7 @@ function createNewBill () {
     // Get request to get all clients in order to extract the lastID
       cy.request({
             method: 'GET', 
-           url: 'http://localhost:3000/api/bills', 
+           url: GET_BILLS_ENDPOINT, 
            headers: {
                'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                'Content-Type': 'application/json'
@@ -50,7 +54,7 @@ function createNewBill () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/bill/'+lastID,  
+                url: GET_BILL_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -61,7 +65,7 @@ function createNewBill () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'POST',
-                    url: 'http://localhost:3000/api/bill/new', 
+                    url: CREATE_BILL_ENDPOINT, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
@@ -88,7 +92,7 @@ function editLastBill () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/bills', 
+            url: GET_BILLS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -101,7 +105,7 @@ function editLastBill () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/bill/'+lastID,  
+                url: GET_BILL_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -111,7 +115,7 @@ function editLastBill () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/bill/'+lastID, 
+                    url: GET_BILL_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
@@ -139,7 +143,7 @@ function deleteLastBill () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/bills', 
+            url: GET_BILLS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -152,7 +156,7 @@ function deleteLastBill () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/bill/'+lastID,  
+                url: GET_BILL_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -162,7 +166,7 @@ function deleteLastBill () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'DELETE',
-                    url: 'http://localhost:3000/api/bill/'+lastID, 
+                    url: GET_BILL_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'

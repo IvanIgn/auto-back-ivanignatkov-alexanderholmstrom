@@ -20,7 +20,7 @@ describe('Test suite', () => {
         client.getAllClients()
     })
 
-    it('createNewClient', () => { 
+    it('createNewClient', () => {
         client.createNewClient()
     })
 

@@ -1,5 +1,9 @@
 const faker = require('faker')
 
+const GET_ROOMS_ENDPOINT = 'http://localhost:3000/api/rooms'
+const CREATE_ROOM_ENDPOINT = 'http://localhost:3000/api/room/new'
+const GET_ROOM_ENDPOINT = 'http://localhost:3000/api/room/'
+
 //functions
 
 /*
@@ -23,7 +27,7 @@ function getAllRooms () {
     cy.authenticate().then((response =>{
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/rooms', 
+            url: GET_ROOMS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -44,7 +48,7 @@ function createNewRoom () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/rooms', 
+            url: GET_ROOMS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -57,7 +61,7 @@ function createNewRoom () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/room/'+lastID,  
+                url: GET_ROOM_ENDPOINT +lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
@@ -68,7 +72,7 @@ function createNewRoom () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'POST',
-                    url: 'http://localhost:3000/api/room/new', 
+                    url: CREATE_ROOM_ENDPOINT, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
@@ -80,7 +84,7 @@ function createNewRoom () {
                        'number': faker.datatype.number({min: 1, max: 200}),
                        'available':true,
                        'price': faker.datatype.number({min: 1000, max: 10000}),
-                       'features': faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
+                       'features': "balcony"//faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
                       }            
                 }).then((response => {
                     expect(response.status).to.eq(200)
@@ -99,13 +103,13 @@ function editLastRoom () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/rooms', 
+            url: GET_ROOMS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
             }
         }).then((response =>{
-            cy.wait(200)
+           
             expect(response.status).to.eq(200)
             //Save the id of the last client into a variable
             let lastID = response.body[response.body.length -1].id
@@ -113,24 +117,24 @@ function editLastRoom () {
 
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/room/'+lastID,  
+                url: GET_ROOM_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
                 }
             }).then((response => {
-                cy.wait(200)
+               
                 expect(response.status).to.eq(200)
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'PUT',
-                    url: 'http://localhost:3000/api/room/'+lastID, 
+                    url: GET_ROOM_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
                     body: {
-                        'id': lastID,
+                       'id': lastID,
                        'category': faker.random.arrayElement(["double","single","twin"]),
                        'floor': faker.datatype.number({min: 1, max: 50}),  
                        'number': faker.datatype.number({min: 1, max: 200}),
@@ -139,7 +143,7 @@ function editLastRoom () {
                        'features': faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
                       }                  
                 }).then((response => {
-                    cy.wait(200)
+                    
                     expect(response.status).to.eq(200)
                     cy.log(JSON.stringify(response.body))
                 }))
@@ -157,7 +161,7 @@ function deleteLastRoom () {
         // Get request to get all clients in order to extract the lastID
         cy.request({
             method: 'GET', 
-            url: 'http://localhost:3000/api/rooms', 
+            url: GET_ROOMS_ENDPOINT, 
             headers: {
                 'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                 'Content-Type': 'application/json'
@@ -170,7 +174,7 @@ function deleteLastRoom () {
             
             cy.request({
                 method: 'GET', 
-                url: 'http://localhost:3000/api/room/'+lastID,  
+                url: GET_ROOM_ENDPOINT + lastID,  
                 headers: {
                     'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                     'Content-Type': 'application/json'
