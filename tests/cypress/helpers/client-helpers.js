@@ -6,7 +6,7 @@ const GET_CLIENT_ENDPOINT = 'http://localhost:3000/api/client/'
 
 
 //functions
-
+/*
 function clientInfo() {
 let clientData = {
     //"id": getLastClientID(), //+ id,
@@ -16,9 +16,10 @@ let clientData = {
 }
     return clientData   
 }
+*/
 
 
-
+/*
 function getLastClientID () {
     // Authentication; Getting a valid token
     let bla = 0
@@ -51,9 +52,9 @@ function getLastClientID () {
             }))
             }))
         })) 
-        return bla
-       
+        return bla       
 }
+*/
 
 
 
