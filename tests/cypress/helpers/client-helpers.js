@@ -6,56 +6,25 @@ const GET_CLIENT_ENDPOINT = 'http://localhost:3000/api/client/'
 
 
 //functions
-/*
-function clientInfo() {
+
+function createdClientInfo() {
 let clientData = {
-    //"id": getLastClientID(), //+ id,
-    "name": faker.name.firstName(),
+    "name": faker.name.findName(),
     "email": faker.internet.email(),
     "telephone": faker.phone.phoneNumber()
 }
     return clientData   
 }
-*/
 
-
-/*
-function getLastClientID () {
-    // Authentication; Getting a valid token
-    let bla = 0
-    cy.authenticate().then((response => {
-        // Get request to get all clients in order to extract the lastID
-        cy.request({
-            method: 'GET', 
-            url: 'http://localhost:3000/api/clients', 
-            headers: {
-                'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                'Content-Type': 'application/json'
-            }
-        }).then((response =>{
-            expect(response.status).to.eq(200)
-            //Save the id of the last client into a variable
-           let lastID = response.body[response.body.length -1].id
-            cy.log(lastID)
-    
-            cy.request({
-                method: 'GET', 
-                url: 'http://localhost:3000/api/client/'+lastID,  
-                headers: {
-                    'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                    'Content-Type': 'application/json'
-                }
-            }).then((response => {
-                expect(response.status).to.eq(200)
-              bla =  Cypress.env({lastClientID: lastID})
-                cy.log(JSON.stringify(response.body))
-            }))
-            }))
-        })) 
-        return bla       
-}
-*/
-
+function editedClientInfo(id) {
+    let clientData = {
+        "id": id,
+        "name": faker.name.findName(),
+        "email": faker.internet.email(),
+        "telephone": faker.phone.phoneNumber()
+    }
+        return clientData   
+    }
 
 
 function getAllClients () {
@@ -80,31 +49,6 @@ function getAllClients () {
 function createNewClient () {
     // Authentication; Getting a valid token
     cy.authenticate().then((response => {
-        // Get request to get all clients in order to extract the lastID
-        cy.request({
-            method: 'GET', 
-            url: GET_CLIENTS_ENDPOINT, 
-            headers: {
-                'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                'Content-Type': 'application/json'
-            }
-        }).then((response =>{
-            expect(response.status).to.eq(200)
-            //Save the id of the last client into a variable
-            let lastID = response.body[response.body.length -1].id
-            cy.log(lastID)
-
-            cy.request({
-                method: 'GET', 
-                url: GET_CLIENT_ENDPOINT +lastID,  
-                headers: {
-                    'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                    'Content-Type': 'application/json'
-                }
-            }).then((response => {
-                lastID = lastID + 1
-                expect(response.status).to.eq(200)
-                cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'POST',
                     url: CREATE_CLIENT_ENDPOINT, 
@@ -112,22 +56,13 @@ function createNewClient () {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body: /*clientInfo()*/ {
-                        "id": lastID,
-                        "name": faker.name.findName(), 
-                        "email": faker.internet.email(),
-                        "telephone": faker.phone.phoneNumber()
-                    }                  
+                    body: createdClientInfo()             
                 }).then((response => {
                     expect(response.status).to.eq(200)
-                   // Cypress.env({lastClientID:response.body.id})
                     cy.log(JSON.stringify(response.body))
                 }))
             }))
 
-        }))
-    }))
-   
 }
 
 
@@ -166,12 +101,7 @@ function editLastClient () {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body: /*clientInfo()*/ {
-                        "id": lastID,
-                        "name": faker.name.findName(),
-                        "email": faker.internet.email(),
-                        "telephone": faker.phone.phoneNumber()
-                    }             
+                    body: editedClientInfo(lastID)
                 }).then((response => {
                     expect(response.status).to.eq(200)
                     cy.log(JSON.stringify(response.body))
@@ -228,7 +158,6 @@ function deleteLastClient () {
     }))
    
 }
-
 
 //exports
 

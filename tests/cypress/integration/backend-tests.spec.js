@@ -17,38 +17,38 @@ describe('Test suite', () => {
     /// Clients
 
     it('getAllClients', () => {
-        client.getAllClients()
+        client.getAllClients() && cy.logout()
     })
 
     it('createNewClient', () => {
-        client.createNewClient()
+        client.createNewClient() && cy.logout()
     })
 
     it('editLastClient', () => {
-        client.editLastClient()
+        client.editLastClient() && cy.logout()
     })
     
     it('deleteLastClient', () => {
-        client.deleteLastClient()  
+        client.deleteLastClient() && cy.logout()
     })
     
     
     /// Rooms
     
     it('getAllRooms', () => {
-        room.getAllRooms()
+        room.getAllRooms() && cy.logout()
     })
 
     it('createNewRoom', () => {
-        room.createNewRoom()
+        room.createNewRoom() && cy.logout()
     })
 
     it('editLastRoom', () => {
-        room.editLastRoom()
+        room.editLastRoom() && cy.logout()
     })
     
     it('deleteLastRoom', () => {
-        room.deleteLastRoom()
+        room.deleteLastRoom() && cy.logout()
     })
     
     
@@ -56,19 +56,19 @@ describe('Test suite', () => {
     /// Bills
     
     it('getAllBills', () => {
-        bill.getAllBills()
+        bill.getAllBills() && cy.logout()
     })
 
     it('createNewBill', () => {
-        bill.createNewBill()
+        bill.createNewBill() && cy.logout()
     })
 
     it('editLastBill', () => {
-        bill.editLastBill()
+        bill.editLastBill() && cy.logout()
     })
     
     it('deleteLastBill', () => {
-        bill.deleteLastBill()
+       bill.deleteLastBill() && cy.logout()
     })
     
     /// Logout
@@ -76,7 +76,6 @@ describe('Test suite', () => {
     it('POST request towards /api/logout', () => {
         cy.logout()
     }) 
-
 
 })
 

@@ -6,11 +6,9 @@ const GET_ROOM_ENDPOINT = 'http://localhost:3000/api/room/'
 
 //functions
 
-/*
-function roomInfo() {
+
+function createdRoomInfo() {
 let roomData = {
-    // 'id': lastID,
-    //'created':'2020-01-03T12:00:00.000Z',
         'category': faker.random.arrayElement(["double","single","twin"]),
         'floor': faker.datatype.number({min: 1, max: 50}),  
         'number': faker.datatype.number({min: 1, max: 200}),
@@ -21,7 +19,21 @@ let roomData = {
     }
         return roomData   
     }
-    */
+
+    function editedRoomInfo(id) {
+        let roomData = {
+            'id': id,
+            'category': faker.random.arrayElement(["double","single","twin"]),
+            'floor': faker.datatype.number({min: 1, max: 50}),  
+            'number': faker.datatype.number({min: 1, max: 200}),
+            'available':true,
+            'price': faker.datatype.number({min: 1000, max: 10000}),
+            'features': faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
+        
+            }
+                return roomData   
+            }
+    
 
 function getAllRooms () {
     cy.authenticate().then((response =>{
@@ -46,30 +58,6 @@ function createNewRoom () {
     // Authentication; Getting a valid token
     cy.authenticate().then((response => {
         // Get request to get all clients in order to extract the lastID
-        cy.request({
-            method: 'GET', 
-            url: GET_ROOMS_ENDPOINT, 
-            headers: {
-                'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                'Content-Type': 'application/json'
-            }
-        }).then((response =>{
-            expect(response.status).to.eq(200)
-            //Save the id of the last client into a variable
-            let lastID = response.body[response.body.length -1].id
-            cy.log(lastID)
-
-            cy.request({
-                method: 'GET', 
-                url: GET_ROOM_ENDPOINT +lastID,  
-                headers: {
-                    'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
-                    'Content-Type': 'application/json'
-                }
-            }).then((response => {
-                lastID = lastID + 1
-                expect(response.status).to.eq(200)
-                cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'POST',
                     url: CREATE_ROOM_ENDPOINT, 
@@ -77,24 +65,12 @@ function createNewRoom () {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body:{
-                       'id': lastID,
-                       'category': faker.random.arrayElement(["double","single","twin"]),
-                       'floor': faker.datatype.number({min: 1, max: 50}),  
-                       'number': faker.datatype.number({min: 1, max: 200}),
-                       'available':true,
-                       'price': faker.datatype.number({min: 1000, max: 10000}),
-                       'features': "balcony"//faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
-                      }            
+                    body: createdRoomInfo()             
                 }).then((response => {
                     expect(response.status).to.eq(200)
                     cy.log(JSON.stringify(response.body))
                 }))
             }))
-
-        }))
-    }))
-   
 }
 
 function editLastRoom () {
@@ -133,15 +109,7 @@ function editLastRoom () {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
                     }, 
-                    body: {
-                       'id': lastID,
-                       'category': faker.random.arrayElement(["double","single","twin"]),
-                       'floor': faker.datatype.number({min: 1, max: 50}),  
-                       'number': faker.datatype.number({min: 1, max: 200}),
-                       'available':true,
-                       'price': faker.datatype.number({min: 1000, max: 10000}),
-                       'features': faker.random.arrayElement(["balcony","ensuite","sea_view","penthouse"])
-                      }                  
+                    body: editedRoomInfo(lastID)                  
                 }).then((response => {
                     
                     expect(response.status).to.eq(200)
@@ -184,7 +152,7 @@ function deleteLastRoom () {
                 cy.log(JSON.stringify(response.body))
                 cy.request({
                     method: 'DELETE',
-                    url: 'http://localhost:3000/api/room/'+lastID, 
+                    url: GET_ROOM_ENDPOINT + lastID, 
                     headers: {
                         'X-User-Auth':JSON.stringify(Cypress.env().loginToken), 
                         'Content-Type': 'application/json'
